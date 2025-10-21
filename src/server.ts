@@ -1,8 +1,11 @@
+// Load environment variables
+import dotenv from 'dotenv';
+dotenv.config();
+
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
-import dotenv from 'dotenv';
 
 // Import routes
 import waitlistRoutes from './routes/waitlist';
@@ -10,8 +13,6 @@ import suggestionRoutes from './routes/suggestions';
 import languageRoutes from './routes/language';
 import adminRoutes from './routes/admin';
 
-// Load environment variables
-dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
