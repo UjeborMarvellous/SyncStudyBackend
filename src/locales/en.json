@@ -1,0 +1,60 @@
+{
+  "hero": {
+    "title": "The Future of Student Dream, Powered by AI",
+    "description": "Stop struggling alone. Join thousands of students who are already transforming their academic journey. Our AI-powered platform connects you with perfect study partners, smart scheduling, and personalized learning tools that actually work.",
+    "button": "Get Early Access Now"
+  },
+  "features": {
+    "title": "Why Students Are Going Crazy for This",
+    "subtitle": "Everything you need to succeed, all in one place"
+  },
+  "about": {
+    "title": "AI That Actually Makes You Smarter",
+    "subtitle": "Personalized learning powered by artificial intelligence"
+  },
+  "suggestions": {
+    "title": "Your Voice Shapes Our Future",
+    "subtitle": "Help us build the perfect platform for students"
+  },
+  "forms": {
+    "waitlist": {
+      "title": "Join the Waitlist",
+      "subtitle": "Free forever. No spam.",
+      "name": "Full Name",
+      "email": "Email Address",
+      "university": "University",
+      "interests": "Interests",
+      "submit": "Get Early Access",
+      "success": "Successfully added to waitlist!",
+      "error": "Failed to join waitlist. Please try again."
+    },
+    "suggestions": {
+      "title": "Share Your Ideas",
+      "subtitle": "Tell us what you'd like to see in StudyConnect",
+      "suggestion": "Your Suggestion",
+      "email": "Email Address",
+      "submit": "Submit Suggestion",
+      "success": "Suggestion submitted successfully!",
+      "error": "Failed to submit suggestion. Please try again."
+    }
+  },
+  "validation": {
+    "languageError": "Only English and Italian languages are supported",
+    "required": "This field is required",
+    "email": "Please enter a valid email address",
+    "minLength": "Must be at least {min} characters",
+    "maxLength": "Must be no more than {max} characters"
+  },
+  "footer": {
+    "description": "The future of student collaboration is here. Join thousands of students who are already transforming their academic journey.",
+    "whatsComing": "What's Coming",
+    "getInvolved": "Get Involved",
+    "copyright": "© 2025 StudyConnect. Built with ❤️ for students who refuse to study alone."
+  },
+  "comingSoon": {
+    "title": "Coming Soon!",
+    "message": "We're working hard to bring you amazing features. Stay tuned for updates!",
+    "shareIdeas": "Share Your Ideas",
+    "joinWaitlist": "Join Waitlist"
+  }
+}

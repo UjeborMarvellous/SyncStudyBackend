@@ -1,0 +1,60 @@
+{
+  "hero": {
+    "title": "Il Futuro del Sogno Studentesco, Alimentato dall'AI",
+    "description": "Smetti di lottare da solo. Unisciti a migliaia di studenti che stanno già trasformando il loro percorso accademico. La nostra piattaforma alimentata dall'AI ti connette con partner di studio perfetti, pianificazione intelligente e strumenti di apprendimento personalizzati che funzionano davvero.",
+    "button": "Ottieni Accesso Anticipato Ora"
+  },
+  "features": {
+    "title": "Perché gli Studenti Impazziscono per Questo",
+    "subtitle": "Tutto ciò di cui hai bisogno per avere successo, tutto in un posto"
+  },
+  "about": {
+    "title": "AI che Ti Rende Davvero Più Intelligente",
+    "subtitle": "Apprendimento personalizzato alimentato dall'intelligenza artificiale"
+  },
+  "suggestions": {
+    "title": "La Tua Voce Modella il Nostro Futuro",
+    "subtitle": "Aiutaci a costruire la piattaforma perfetta per gli studenti"
+  },
+  "forms": {
+    "waitlist": {
+      "title": "Unisciti alla Lista d'Attesa",
+      "subtitle": "Gratis per sempre. Niente spam.",
+      "name": "Nome Completo",
+      "email": "Indirizzo Email",
+      "university": "Università",
+      "interests": "Interessi",
+      "submit": "Ottieni Accesso Anticipato",
+      "success": "Aggiunto con successo alla lista d'attesa!",
+      "error": "Impossibile unirsi alla lista d'attesa. Riprova."
+    },
+    "suggestions": {
+      "title": "Condividi le Tue Idee",
+      "subtitle": "Dicci cosa vorresti vedere in StudyConnect",
+      "suggestion": "Il Tuo Suggerimento",
+      "email": "Indirizzo Email",
+      "submit": "Invia Suggerimento",
+      "success": "Suggerimento inviato con successo!",
+      "error": "Impossibile inviare il suggerimento. Riprova."
+    }
+  },
+  "validation": {
+    "languageError": "Sono supportate solo le lingue inglese e italiana",
+    "required": "Questo campo è obbligatorio",
+    "email": "Inserisci un indirizzo email valido",
+    "minLength": "Deve essere di almeno {min} caratteri",
+    "maxLength": "Non deve superare i {max} caratteri"
+  },
+  "footer": {
+    "description": "Il futuro della collaborazione studentesca è qui. Unisciti a migliaia di studenti che stanno già trasformando il loro percorso accademico.",
+    "whatsComing": "Cosa Sta Arrivando",
+    "getInvolved": "Partecipa",
+    "copyright": "© 2025 StudyConnect. Costruito con ❤️ per studenti che si rifiutano di studiare da soli."
+  },
+  "comingSoon": {
+    "title": "Prossimamente!",
+    "message": "Stiamo lavorando sodo per portarti funzionalità incredibili. Resta sintonizzato per gli aggiornamenti!",
+    "shareIdeas": "Condividi le Tue Idee",
+    "joinWaitlist": "Unisciti alla Lista d'Attesa"
+  }
+}
