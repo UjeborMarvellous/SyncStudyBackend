@@ -1,6 +1,5 @@
 // Load environment variables
-import dotenv from 'dotenv';
-dotenv.config();
+import 'dotenv/config';
 
 import express from 'express';
 import cors from 'cors';
@@ -21,8 +20,21 @@ const PORT = process.env.PORT || 5000;
 app.use(helmet());
 
 // CORS configuration
+const allowedOrigins = process.env.CORS_ORIGIN
+  ? process.env.CORS_ORIGIN.split(',')
+  : ['http://localhost:3000', 'https://www.syncstudy.ink', 'https://syncstudy.ink'];
+
 app.use(cors({
-  origin: process.env.CORS_ORIGIN || 'http://localhost:3000',
+  origin: (origin, callback) => {
+    // Allow requests with no origin (mobile apps, Postman, etc.)
+    if (!origin) return callback(null, true);
+
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true
 }));
 
@@ -66,13 +78,13 @@ app.use('*', (req, res) => {
 });
 
 // Global error handler
-app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
+app.use((err: any, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
   console.error('Global error handler:', err);
-  
+
   res.status(err.status || 500).json({
     success: false,
-    error: process.env.NODE_ENV === 'production' 
-      ? 'Internal server error' 
+    error: process.env.NODE_ENV === 'production'
+      ? 'Internal server error'
       : err.message
   });
 });
@@ -80,8 +92,9 @@ app.use((err: any, req: express.Request, res: express.Response, next: express.Ne
 // Start server
 app.listen(PORT, () => {
   console.log(`🚀 StudyConnect API server running on port ${PORT}`);
-  console.log(`📊 Health check: http://localhost:${PORT}/health`);
+  console.log(`📊 Health check: /health endpoint available`);
   console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
+  console.log(`🔒 CORS origins:`, allowedOrigins.join(', '));
 });
 
 export default app;

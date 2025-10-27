@@ -1,14 +1,33 @@
 import { Request, Response } from 'express';
 import { db } from '../config/firebase';
 import { WaitlistEntry, ApiResponse } from '../types';
+import { emailService } from '../services/emailService';
 
 export const submitWaitlistEntry = async (req: Request, res: Response) => {
   try {
-    const waitlistData: Omit<WaitlistEntry, 'id' | 'timestamp' | 'status'> = req.body;
-    
-    // Check if email already exists
+    const { email, name, university, interests, language } = req.body;
+
+    // Validate required fields
+    if (!email || !email.trim()) {
+      return res.status(400).json({
+        success: false,
+        error: 'Email is required'
+      });
+    }
+
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({
+        success: false,
+        error: 'Invalid email format'
+      });
+    }
+
+    // Check if email already exists (with optimized query)
     const existingEntry = await db.collection('waitlist')
-      .where('email', '==', waitlistData.email)
+      .where('email', '==', email.toLowerCase().trim())
+      .limit(1)
       .get();
 
     if (!existingEntry.empty) {
@@ -18,14 +37,25 @@ export const submitWaitlistEntry = async (req: Request, res: Response) => {
       });
     }
 
-    // Create new waitlist entry
+    // Create new waitlist entry with validated data
     const newEntry: Omit<WaitlistEntry, 'id'> = {
-      ...waitlistData,
+      email: email.toLowerCase().trim(),
+      name: name?.trim() || '',
+      university: university?.trim() || '',
+      interests: Array.isArray(interests) ? interests : [],
+      language: language || 'en',
       timestamp: new Date(),
       status: 'pending'
     };
 
     const docRef = await db.collection('waitlist').add(newEntry);
+
+    console.log(`✅ New waitlist entry added: ${docRef.id} - ${email}`);
+
+    // Send confirmation email (don't wait for it to complete)
+    emailService.sendWaitlistConfirmation(email, name).catch(err => {
+      console.error('Failed to send waitlist confirmation email:', err);
+    });
 
     const response: ApiResponse<{ id: string }> = {
       success: true,
@@ -35,10 +65,15 @@ export const submitWaitlistEntry = async (req: Request, res: Response) => {
 
     res.status(201).json(response);
   } catch (error) {
-    console.error('Error submitting waitlist entry:', error);
+    console.error('❌ Error submitting waitlist entry:', error);
+    console.error('Request body:', req.body);
+
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
     res.status(500).json({
       success: false,
-      error: 'Internal server error'
+      error: process.env.NODE_ENV === 'production'
+        ? 'Failed to submit waitlist entry'
+        : `Server error: ${errorMessage}`
     });
   }
 };
