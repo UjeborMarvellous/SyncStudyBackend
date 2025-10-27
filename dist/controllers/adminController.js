@@ -5,57 +5,24 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getDashboardStats = exports.getAdminProfile = exports.adminSignup = exports.adminLogin = void 0;
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
-const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const firebase_1 = require("../config/firebase");
 const adminLogin = async (req, res) => {
     try {
         const { email, password } = req.body;
-        // Find admin user
-        const snapshot = await firebase_1.db.collection('adminUsers')
-            .where('email', '==', email)
-            .get();
-        if (snapshot.empty) {
-            return res.status(401).json({
-                success: false,
-                error: 'Invalid credentials'
-            });
-        }
-        const userDoc = snapshot.docs[0];
-        const userData = userDoc.data();
-        // Verify password
-        const isValidPassword = await bcryptjs_1.default.compare(password, userData.password);
-        if (!isValidPassword) {
-            return res.status(401).json({
-                success: false,
-                error: 'Invalid credentials'
-            });
-        }
-        // Update last login
-        await userDoc.ref.update({
-            lastLogin: new Date()
+        // This endpoint is now deprecated since we use Firebase Auth directly
+        // Keep for backward compatibility but redirect to Firebase Auth
+        return res.status(400).json({
+            success: false,
+            error: 'Please use Firebase Authentication directly from the frontend'
         });
-        // Generate JWT token
-        const token = jsonwebtoken_1.default.sign({ userId: userDoc.id }, process.env.JWT_SECRET, { expiresIn: '24h' });
-        const response = {
-            success: true,
-            data: {
-                token,
-                user: {
-                    id: userDoc.id,
-                    email: userData.email,
-                    role: userData.role,
-                    createdAt: userData.createdAt,
-                    lastLogin: new Date()
-                }
-            }
-        };
-        res.json(response);
     }
     catch (error) {
         console.error('Error during admin login:', error);
         res.status(500).json({
             success: false,
-            error: 'Internal server error'
+            error: process.env.NODE_ENV === 'production' ? 'internal server error' : error.message,
+            code: error.code,
+            details: process.env.NODE_ENV === "development" ? error.stack : undefined
         });
     }
 };

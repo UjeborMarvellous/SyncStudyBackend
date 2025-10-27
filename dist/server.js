@@ -3,25 +3,37 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+// Load environment variables
+require("dotenv/config");
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const helmet_1 = __importDefault(require("helmet"));
 const express_rate_limit_1 = __importDefault(require("express-rate-limit"));
-const dotenv_1 = __importDefault(require("dotenv"));
 // Import routes
 const waitlist_1 = __importDefault(require("./routes/waitlist"));
 const suggestions_1 = __importDefault(require("./routes/suggestions"));
 const language_1 = __importDefault(require("./routes/language"));
 const admin_1 = __importDefault(require("./routes/admin"));
-// Load environment variables
-dotenv_1.default.config();
 const app = (0, express_1.default)();
 const PORT = process.env.PORT || 5000;
 // Security middleware
 app.use((0, helmet_1.default)());
 // CORS configuration
+const allowedOrigins = process.env.CORS_ORIGIN
+    ? process.env.CORS_ORIGIN.split(',')
+    : ['http://localhost:3000', 'https://www.syncstudy.ink', 'https://syncstudy.ink'];
 app.use((0, cors_1.default)({
-    origin: process.env.CORS_ORIGIN || 'http://localhost:3000',
+    origin: (origin, callback) => {
+        // Allow requests with no origin (mobile apps, Postman, etc.)
+        if (!origin)
+            return callback(null, true);
+        if (allowedOrigins.includes(origin)) {
+            callback(null, true);
+        }
+        else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
     credentials: true
 }));
 // Rate limiting
@@ -58,7 +70,7 @@ app.use('*', (req, res) => {
     });
 });
 // Global error handler
-app.use((err, req, res, next) => {
+app.use((err, _req, res, _next) => {
     console.error('Global error handler:', err);
     res.status(err.status || 500).json({
         success: false,
@@ -70,8 +82,9 @@ app.use((err, req, res, next) => {
 // Start server
 app.listen(PORT, () => {
     console.log(`🚀 StudyConnect API server running on port ${PORT}`);
-    console.log(`📊 Health check: http://localhost:${PORT}/health`);
+    console.log(`📊 Health check: /health endpoint available`);
     console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
+    console.log(`🔒 CORS origins:`, allowedOrigins.join(', '));
 });
 exports.default = app;
 //# sourceMappingURL=server.js.map
